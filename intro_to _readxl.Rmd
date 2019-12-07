@@ -25,10 +25,38 @@ library(here)
 
 ```
 
-## Read in fish counts
+### Read in fish counts
 
 ```{r}
 #### Read in the fish_counts_curated.csv
 fish_counts <- read_csv(here("R-workshop-data", "fish_counts_curated.csv"))
+
+## here allows you to avoid the slashes, which can be different directions depending on whether you are using mac or windows. Also the parent directory is where the Rmd lives
+```
+
+### Read in data from a single excel worksheet
+
+Now to read in an excel spreadsheet, we'll use the function 
+`read_excel()`
+
+read_excel("substrate_cover_curated.xlsx")
+
+```{r}
+##commeand + option + i inserts a new r code chunk
+
+substrate_cover <- read_excel(here("R-workshop-data", "substrate_cover_curated.xlsx"),
+                              skip = 4,
+                              na = "-9999")
+```
+### Use read_excel() to read in a range of values
+
+```{r}
+carp_cover_2000 <- read_excel(here("R-workshop-data", "substrate_cover_curated.xlsx"),   range = "D12:I15",
+                              col_names = c("site", "transect", "quad", "side", "type", "coverage"))
+```
+### How can we read in data from an Excel workbook with multiple worksheets?
+
+```{r}
+kelp_counts <- read_excel(here("R-workshop-data", "kelp_counts_curated.xlsx"))
 ```
 
