@@ -9,7 +9,26 @@ output: html_document
 
 We are working with data in readxl and it's going to be amazing!
 
-```{r}
+We are going to use packages:
 
+- tidyverse
+- readxl
+- writexl
+- here
+
+```{r packages}
+library(tidyverse)
+# install.packages("package_name")
+library(readxl)
+library(writexl)
+library(here)
 
 ```
+
+## Read in fish counts
+
+```{r}
+#### Read in the fish_counts_curated.csv
+fish_counts <- read_csv(here("R-workshop-data", "fish_counts_curated.csv"))
+```
+
