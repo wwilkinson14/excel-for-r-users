@@ -1,0 +1,81 @@
+---
+title: "Filter/joins (like VLOOKUP in Excel)"
+author: "Whitney"
+date: "12/8/2019"
+output: html_document
+---
+
+##Attach packages
+
+```{r, include = FALSE}
+library(tidyverse)
+library(readxl)
+library(here)
+```
+
+Read in 3 files:
+
+ - invert_counts_curated.xlsx
+ - fish_counts_curated.csv
+ - kelp_counts_curated.xlsx
+ 
+```{r}
+invert_counts <- read_excel(here("R-workshop-data", "invert_counts_curated.xlsx"))
+fish_counts <- read_csv(here("R-workshop-data", "fish_counts_curated.csv"))
+kelp_count_abur <- read_excel(here("R-workshop-data", "kelp_counts_curated.xlsx"))
+  
+
+```
+ filter based off a condition you are setting by selecting only certain observations
+ ##Filter to match rows based on a character string
+ 
+ Only keep observations from fish_counts where the common_name variable matches "garibaldi"
+ 
+```{r}
+
+fish_garibaldi <- fish_counts %>%
+  filter(common_name == "garibaldi")
+
+# Use janitor::clean_names() to automatically update all of your column names to lowercase_snake_case
+  
+```
+ 
+ Filter to keep/exclude observations based on conditions
+ 
+```{r}
+fish_over50 <- fish_counts %>% 
+  filter(total_count >= 50)
+```
+ 
+ Create a subset that only contains observations for sih at Mohawk Reef ("mohk")
+ 
+```{r}
+fish_mohk <- fish_counts %>% 
+  filter(site == "mohk")
+```
+ 
+ ##Filter to keep rows that match THIS or THAT
+ 
+ #We want to keep any observations for garibaldi, blacksmith, or black surfperch
+ 
+```{r}
+ fish_3sp <- fish_counts %>% 
+   filter(common_name %in% c("garibaldi", "blacksmith", "black surfperch"))
+```
+ 
+filter defaults to include multiple items as "OR" with %in% and concatanating the list of options
+
+##Filter to return that match conditions for MULTIPLE variables (AND statements)
+
+I want to create a subset called urchin_abur_mohk that only keeps observations where site is:
+ - site is "abur" or "mohk" AND
+ - species is "purple urchin"
+ 
+ seperate "AND" conditions within a single filter line and comma
+ 
+```{r}
+urchin_abur_mohk <- invert_counts %>% 
+  filter(site %in% c ("abur", "mohk"), common_name == "purple urchin")
+```
+ 
+ 
