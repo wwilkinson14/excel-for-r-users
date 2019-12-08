@@ -81,3 +81,83 @@ ggplot(data = ci_np, aes(x = year, y = visitors)) +
               linetype = "dashed")
 ```
 
+## Customize Elements based on variable values or outcomes
+
+```{r}
+ggplot(data = ca_np, aes(x = year, y = visitors)) +
+  geom_point(aes(size = visitors,
+                 color = visitors))
+```
+
+Activity: Create a column plot of CINP visitation over time, where the FILL COLOR changes baed on the number of visitors and the outline color is magenta
+
+```{r}
+ggplot(data = ci_np, aes(x = year, y = visitors)) +
+  geom_col(aes(fill = visitors),
+           color = "magenta" )
+```
+
+```{r}
+ggplot(data= ci_np, aes(x = year, y = visitors)) +
+  geom_line(size = 3,
+            color = "red") +
+  theme_get()
+```
+
+## Add/update labels & titles
+Using the `labs` function
+```{r}
+ggplot(data= ci_np, aes(x = year, y = visitors)) +
+  geom_line(size = 1,
+            color = "navy") +
+  theme_get() +
+  labs( x= "My X Axis Title",
+        y = "Annual Visitation",
+        title = "Channel Islands Visitation",
+        subtitle = "(1963 - 2016)")
+```
+
+
+## Combine compatible geoms
+
+Example: Add a point plot on top of a line plot:
+
+```{r}
+ggplot(data= ci_np, aes(x = year, y = visitors)) +
+  geom_line(size = 1,
+            color = "navy") +
+  geom_point(color = "magenta",
+             aes(size = year))
+```
+
+Create a combined column graph + line graph of visitation 
+
+```{r}
+ggplot(data= ci_np, aes(x = year, y = visitors)) +
+  geom_line(size = 1,
+            color = "navy") +
+  geom_col(color = "magenta")
+```
+
+```{r}
+ggplot(data = ca_np, aes(x = year, y = visitors, color = park_name)) +
+  geom_line()
+```
+
+## Faceting ggplot graphs
+
+ - Each series (group) gets its own plot panel
+ 
+```{r}
+ggplot(data= ca_np, aes(x = year, y = visitors, color = park_name)) +
+  geom_line(show.legend = FALSE) +
+  facet_wrap(~ park_name)
+```
+ 
+## Use ggsave to export a plot
+
+```{r}
+ggsave("np_graph.png", dpi = 180, width = 8, height = 7)
+```
+
+## Sync back to Github remote
