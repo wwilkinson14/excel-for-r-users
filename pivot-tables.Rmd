@@ -39,3 +39,54 @@ ggplot(data = lobsters, aes(x = year))+
 ## Our task:
 
 How the average size of lobsters has changed over time across sites?
+
+Pivot tables in R are achieved by using "group_by" and "summarize"
+```{r}
+lobsters %>% 
+  group_by(year) %>% 
+  summarize(count_by_year = n())
+```
+
+What if we didn't use group_by first?
+
+```{r}
+lobsters %>% 
+  summarize(count_by_something = n())
+
+## assign our summary to a new variable 
+
+lobsters_sum <- lobsters %>%
+  summarize(count_by_something = n())
+```
+
+## group_by multiple variables
+
+And summarize by multiple variables 
+n() is a function in dplyr and gives you the number of observations in the current grouping. 
+
+```{r}
+site_year_summary <- lobsters %>%
+  group_by(site, year) %>% 
+  summarize(count_by_siteyear = n(),
+            mean_size_mm = mean(size_mm, na.rm = TRUE),
+            sd_size_mm = sd(size_mm, na.rm =TRUE))
+```
+
+#Activity
+
+1. Calculate the median size_mm
+2. create and ggsave a plot
+
+```{r}
+site_year_summary <- lobsters %>%
+  group_by(site, year) %>% 
+  summarize(count_by_siteyear = n(),
+            median_size_mm = median(size_mm, na.rm = TRUE))
+ggplot(data = site_year_summary, aes(x = year, y = median_size_mm)) +
+  geom_line(aes(color = site))
+
+## I created a figures folder from the RStudio Files pane in order to be organized and for the code to run:
+ggsave(here("figures/lobsters-line.png"))
+
+```
+
