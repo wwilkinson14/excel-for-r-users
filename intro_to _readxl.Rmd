@@ -60,3 +60,36 @@ carp_cover_2000 <- read_excel(here("R-workshop-data", "substrate_cover_curated.x
 kelp_counts <- read_excel(here("R-workshop-data", "kelp_counts_curated.xlsx"))
 ```
 
+Wait! That only read in the first worksheet.
+We only want to read in the Goleta Beach sheet, named golb worksheet
+
+```{r}
+kelp_golb <- read_excel(here("R-workshop-data", "kelp_counts_curated.xlsx"), 
+                        sheet = "golb")
+```
+###Read in AND combine data from multiple Excel worksheets simultaneously using purr::map_df()
+
+```{r}
+#create a path to get to the data
+# control + shift + c while highlighting some code will "#" out the code, in case you want to skip it.
+
+kelp_path <- here("R-workshop-data", "kelp_counts_curated.xlsx")
+
+Kelp_all_sites <- kelp_path %>%
+  excel_sheets()%>%
+  set_names() %>%
+  purr::map_df(read_excel, kelp_path)
+```
+
+### Write a file back to an Excel spreadsheet
+
+We're going to write our "kelp_golb" object to a CSV file
+
+```{r}
+write_csv(kelp_golb, "kelp_goleta_july.csv")
+# If you want to put the new csv in a new subfolder use here
+#write_csv(kelp_golb, here(where you want to put it))
+
+write_xlsx(kelp_golb, "kelp_goleta_excel.xlsx")
+```
+
