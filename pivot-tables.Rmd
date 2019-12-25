@@ -90,3 +90,43 @@ ggsave(here("figures/lobsters-line.png"))
 
 ```
 
+#dplyr::count() for counting by group
+This is a "shortcut" function
+
+```{r}
+lobsters %>%
+  count(site, year)
+
+# this is the same as 
+
+lobsters %>%
+  group_by(site, year) %>% 
+  summarize(n = n()) %>% 
+  ungroup()
+  
+```
+
+Mutate add a new column it will make a new variable
+
+```{r}
+lobsters %>%
+  mutate(size_m = size_mm/1000,
+         millenia = 2000,
+         observer = "Allison Horst")
+  
+```
+
+Select function to subset variables by columns
+
+lets select 
+ - date
+ - site
+ - size_m
+ 
+```{r}
+lobsters_selected <- lobsters %>%
+  mutate(size_m = size_mm/1000) %>% 
+  select(date, site, size_m)
+```
+ 
+ 
